@@ -37,21 +37,76 @@ void error_exit(char* msg)
     exit(1);
 }
 
-int create_http_response(char** response, char* message)
+int create_http_response(char** response, char* message, char* type)
 {
     char* template = (char*)"HTTP/1.1 200 OK\r\n" \
-                            "Content-Type: text/plain\r\n" \
+                            "Content-Type: %s\r\n" \
                             "Content-Length: %d\r\n\r\n" \
                             "%s";
 
     int message_len = strlen(message);
     int template_len = strlen(template);
-    int response_len = message_len + template_len;
+    int type_len = strlen(type);
+    int response_len = message_len + template_len + type_len;
 
-    *response = (char*)malloc(response_len);
-    sprintf(*response, template, message_len, message);
+    *response = (char*)calloc(response_len, 1);
+    sprintf(*response, template, type, message_len, message);
 
     return response_len;
+}
+
+int parse_response_file(char* path, char** message)
+{
+    char* selected = path;
+    if (access(path, F_OK) != 0)
+        selected = (char*)"page404.html";
+
+    FILE* f = fopen(selected, "rb");
+
+    fseek(f, 0, SEEK_END);
+    long fsize = ftell(f);
+    fseek(f, 0, SEEK_SET);
+
+    *message = calloc(fsize + 1, 1);
+
+    fread(*message, fsize, 1, f);
+
+    fclose(f);
+
+    return fsize;
+}
+
+int parse_path(char* request, int request_size, char** path)
+{
+    char buffer[BUFFER_SIZE];
+    bzero(buffer, BUFFER_SIZE);
+
+    int started = 0;
+    int pathlen = 0;
+    for ( int i = 0; i < request_size; i++ )
+    {
+        if ( request[i] == '/' )
+        {
+            started = 1;
+            continue;
+        }
+
+        if ( request[i] == ' ' )
+            if ( started )
+                break;
+
+        if ( !started )
+            continue;
+
+        buffer[pathlen++] = request[i];
+    }
+
+    *path = (char*)calloc(pathlen + 1, 1);
+
+    for ( int i = 0; i < pathlen; i++ )
+        (*path)[i] = buffer[i];
+
+    return pathlen;
 }
 
 int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
@@ -76,16 +131,32 @@ int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
 
         char *ip = inet_ntoa(cli_addr->sin_addr);
 
-        /* printf(" [SERVER] recieved the message from %s\n%s\n", ip, buffer); */
-        printf(" [SERVER] recieved the message from %s\n", ip);
+        printf(" [SERVER] recieved the message from %s\n%s\n", ip, buffer);
+        /* printf(" [SERVER] recieved the message from %s\n", ip); */
 
-        char* message = (char*)"Server's test response message";
-        char* response; int response_len = create_http_response(&response, message);
+        // Parse endpoint path
+        char* path; int pathlen = parse_path(buffer, BUFFER_SIZE, &path);
 
-        n = write(newsockfd, response, response_len);
+        if ( strlen(path) == 0 )
+        {
+            char* message = (char*)"Server's test response message";
+            char* type = (char*)"text/plain";
+            char* response; int response_len = create_http_response(&response, message, type);
+
+            n = write(newsockfd, response, response_len);
+        } else {
+            char* message; int message_len = parse_response_file(path, &message);
+            char* type = (char*)"text/html";
+            char* response; int response_len = create_http_response(&response, message, type);
+
+            n = write(newsockfd, response, response_len);
+        }
+
         if (n < 0)
             error_exit(" [ERROR] writing to socket");
     }
+
+    return 0;
 }
 
 int main(int argc, char* argv[])
