@@ -19,7 +19,7 @@
 #include <sys/socket.h>
 
 // Contains constants and structures
-// needed for internet domain addresses
+// needed for Internet domain addresses
 #include <netinet/in.h>
 
 // inet_ntoa()
@@ -93,12 +93,12 @@ int main(int argc, char* argv[])
     // Variable to send quit message
     int quit = 0;
 
-    // These two variables are file desctiptors.
+    // These two variables are file descriptors.
     // They store the values returned by the socket
     // system call and the accept system call
     int sockfd, newsockfd;
 
-    // Stores the porn number on which the server
+    // Stores the port number on which the server
     // accepts connections
     int port_number;
 
@@ -115,11 +115,11 @@ int main(int argc, char* argv[])
     // connection into this buffer
     char buffer[BUFFER_SIZE];
 
-    // sockaddr_in is a structure containing an internet
+    // sockaddr_in is a structure containing an Internet
     // address. This structure is defined in netinet/in.h
     // struct sockaddr_in
     // {
-    //     short sin_family; // AF_INET for internet connection
+    //     short sin_family; // AF_INET for Internet connection
     //     u_short sin_port;
     //     struct in_addr sin_addr;
     //     char sin_zero[8]; // not used, must be zero
@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
     //            in a continuous stream;
     //         b) SOCK_DGRAM for datagram in which messages
     //            are read in chunks;
-    //     3) The protocol(should always be zero except for
+    //     3) The protocol (should always be zero except for
     //        unusual circumstances)
     // The socket system call returns an entry into the file
     // desctiptor table (i.e. a small integer). This value is
@@ -188,8 +188,8 @@ int main(int argc, char* argv[])
     // The listen system call allows the process to listen on
     // the socket for connections. The first argument is the
     // socket file descriptor, and the second is the size of the
-    // backlog queue, i.e. the number of connections that can be
-    // waiting while the process is handling a particular
+    // backlog queue, i.e. the number of connections that can
+    // wait while the process is handling a particular
     // connection
     listen(sockfd, 5);
 
