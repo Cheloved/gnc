@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>GNC</title>
+	<link rel="stylesheet" id="css-link" href="styles.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+	<link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='40' viewBox='0 0 60 40'%3E%3Crect width='60' height='40' fill='%23007DFC' /%3E%3Cellipse stroke-width='0' ry='15' cx='30' cy='20' stroke='%23000' fill='%23fff' /%3E%3Cellipse stroke-width='0' ry='10' cx='30' cy='20' stroke='%23000' fill='%23007DFC' /%3E%3C/svg%3E">
+</head>
+<body>
+	<header>
+		<div class="mobile-header">
+			<div class="logo">
+				<svg xmlns="http://www.w3.org/2000/svg" width="60" height="40" viewBox="0 0 60 40">
+					<rect id="rect" width="60" height="40" fill="#007DFC" />
+					<ellipse id="el-1" stroke-width="0" ry="15" cx="30" cy="20" stroke="#000" fill="#fff" />
+					<ellipse id="el-2" stroke-width="0" ry="10" cx="30" cy="20" stroke="#000" fill="#007DFC" />
+				</svg>
+				<span id="logo-span">GNC</span>
+			</div>
+			<a href="javascript:void(0);" class="hamburger-icon" onclick="handleMenu()">
+				<svg id="hamburger-icon-svg" fill="#007DFC" width="40" height="40" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+					<g transform="matrix(1,0,0,1,-1024,-192)">
+						<g transform="matrix(1.50868,0,0,1.01217,6.67804,191.698)">
+							<g transform="matrix(0.149202,0,0,0.173437,664.206,42.142)">
+								<rect x="103.288" y="8.535" width="212.447" height="34.133" style="fill-rule:nonzero;"/>
+							</g>
+							<g transform="matrix(0.149202,0,0,0.173437,664.345,27.4)">
+								<rect x="103.288" y="8.535" width="212.447" height="34.133" style="fill-rule:nonzero;"/>
+							</g>
+							<g transform="matrix(0.149202,0,0,0.173437,664.345,12.658)">
+								<rect x="103.288" y="8.535" width="212.447" height="34.133" style="fill-rule:nonzero;"/>
+							</g>
+						</g>
+					</g>
+				</svg>
+			</a>
+		</div>
+		<ul class="content">
+			<li class="ext-link">
+				<a href="https://github.com/Cheloved/dist-compile" target="_blank" rel="noopener">
+					<span>GitHub</span>
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path id="ext-link-path" d="M21 9L21 3M21 3H15M21 3L13 11M10 5H7.8C6.11984 5 5.27976 5 4.63803 5.32698C4.07354 5.6146 3.6146 6.07354 3.32698 6.63803C3 7.27976 3 8.11984 3 9.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H14.2C15.8802 21 16.7202 21 17.362 20.673C17.9265 20.3854 18.3854 19.9265 18.673 19.362C19 18.7202 19 17.8802 19 16.2V14" stroke="#007DFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</a>
+			</li>
+			<li class="lang">
+				<select name="variants" id="pick-lang">
+					<option value="en" selected>English</option>
+					<option value="ru">Русский</option>
+					<option value="cz">Čeština</option>
+					<option value="dk">Dansk</option>
+				</select>
+				<svg id="arrow" onclick="selectOnArrow()" width="15" height="15" viewBox="0 -4.5 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<g id="arrow-stroke" transform="translate(-220.000000, -6684.000000)" fill="#000000">
+						<g transform="translate(56.000000, 160.000000)">
+							<path d="M164.292308,6524.36583 L164.292308,6524.36583 C163.902564,6524.77071 163.902564,6525.42619 164.292308,6525.83004 L172.555873,6534.39267 C173.33636,6535.20244 174.602528,6535.20244 175.383014,6534.39267 L183.70754,6525.76791 C184.093286,6525.36716 184.098283,6524.71997 183.717533,6524.31405 C183.328789,6523.89985 182.68821,6523.89467 182.29347,6524.30266 L174.676479,6532.19636 C174.285736,6532.60124 173.653152,6532.60124 173.262409,6532.19636 L165.705379,6524.36583 C165.315635,6523.96094 164.683051,6523.96094 164.292308,6524.36583" />
+						</g>
+					</g>
+				</svg>
+			</li>
+			<li class="mode">
+				<svg id="moon" width="40" height="40" viewBox="0 0 32 32" fill="#000000" xmlns="http://www.w3.org/2000/svg" onclick="toggleMode()">
+					<path d="M10.895 7.574c0 7.55 5.179 13.67 11.567 13.67 1.588 0 3.101-0.38 4.479-1.063-1.695 4.46-5.996 7.636-11.051 7.636-6.533 0-11.83-5.297-11.83-11.83 0-4.82 2.888-8.959 7.023-10.803-0.116 0.778-0.188 1.573-0.188 2.39z" />
+				</svg>
+				<svg id="sun" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="toggleMode()">
+					<circle cx="12" cy="12" r="4.14113" stroke="#FFFFFF" stroke-width="1.91129"/>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M12.9556 3.08065C12.9556 2.55286 12.5277 2.125 12 2.125C11.4722 2.125 11.0443 2.55286 11.0443 3.08065L11.0443 5.64078C11.3561 5.59432 11.6753 5.57024 12 5.57024C12.3247 5.57024 12.6438 5.59431 12.9556 5.64076L12.9556 3.08065ZM12.9556 18.3594C12.6438 18.4059 12.3247 18.4299 12 18.4299C11.6753 18.4299 11.3561 18.4058 11.0443 18.3594L11.0443 20.9194C11.0443 21.4471 11.4722 21.875 12 21.875C12.5277 21.875 12.9556 21.4471 12.9556 20.9194L12.9556 18.3594Z" fill="#FFFFFF"/>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M20.9194 12.9556C21.4471 12.9556 21.875 12.5277 21.875 12C21.875 11.4722 21.4471 11.0443 20.9194 11.0443L18.3592 11.0443C18.4057 11.3561 18.4298 11.6753 18.4298 12C18.4298 12.3247 18.4057 12.6438 18.3592 12.9556L20.9194 12.9556ZM5.6406 12.9556C5.59415 12.6438 5.57008 12.3247 5.57008 12C5.57008 11.6753 5.59416 11.3561 5.64062 11.0443L3.08064 11.0443C2.55286 11.0443 2.125 11.4722 2.125 12C2.125 12.5277 2.55286 12.9556 3.08064 12.9556L5.6406 12.9556Z" fill="#FFFFFF"/>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M18.9828 6.36876C19.356 5.99555 19.356 5.39047 18.9828 5.01727C18.6096 4.64407 18.0045 4.64407 17.6313 5.01727L15.8209 6.82764C16.0743 7.01528 16.3169 7.22391 16.5466 7.45354C16.7762 7.68315 16.9848 7.92581 17.1724 8.17912L18.9828 6.36876ZM8.17898 17.1725C7.92567 16.9849 7.68302 16.7763 7.45341 16.5467C7.22378 16.3171 7.01514 16.0744 6.82751 15.8211L5.01742 17.6311C4.64422 18.0043 4.64422 18.6094 5.01742 18.9826C5.39062 19.3558 5.9957 19.3558 6.36891 18.9826L8.17898 17.1725Z" fill="#FFFFFF"/>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M6.36888 5.01722C5.99568 4.64402 5.3906 4.64402 5.01739 5.01722C4.64419 5.39043 4.64419 5.99551 5.01739 6.36871L6.82776 8.17908C7.0154 7.92574 7.22403 7.68306 7.45366 7.45342C7.68327 7.22381 7.92593 7.0152 8.17924 6.82758L6.36888 5.01722ZM17.1727 15.821C16.9851 16.0743 16.7764 16.317 16.5468 16.5466C16.3172 16.7762 16.0745 16.9849 15.8212 17.1725L17.6313 18.9826C18.0045 19.3558 18.6095 19.3558 18.9828 18.9826C19.356 18.6094 19.356 18.0043 18.9828 17.6311L17.1727 15.821Z" fill="#FFFFFF"/>
+				</svg>
+			</li>
+		</ul>
+	</header>
+	<main>
+		<article>
+			<h1 id="h1">Heading 1</h1>
+			<h2 id="h1-1">Heading 1.1</h2>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce efficitur consequat nulla ac luctus. Nullam lacinia, libero eget consectetur mollis, erat nibh mattis turpis, quis condimentum turpis nulla sed velit. Praesent tincidunt sapien elementum ligula sodales viverra. Maecenas enim mi, iaculis vitae ultricies sit amet, semper sit amet erat. Vivamus et tellus a enim viverra iaculis. Etiam bibendum, sem vitae feugiat posuere, neque dolor convallis libero, quis imperdiet ipsum nulla quis lectus. Vestibulum et lacus non massa pharetra faucibus. Nunc laoreet condimentum vestibulum. Aliquam erat volutpat. Fusce magna mi, sagittis eu orci sed, sodales volutpat leo.
+				Suspendisse fermentum faucibus nulla, a rutrum metus consequat quis. In vulputate in lacus dapibus dignissim. Aenean volutpat eleifend tincidunt. Aenean dapibus quis lectus placerat tempus. Praesent erat magna, blandit faucibus ligula et, pretium convallis nisi. Aenean lacinia, magna sed vestibulum facilisis, massa ipsum tempor massa, elementum lobortis lacus quam nec velit.
+			</p>
+			<div class="code-container">
+				<code>
+					<span class="dollar">$&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="first-arg">curl&nbsp;</span><span class="second-arg">example.org/get</span><span class="others">&nbsp;>&nbsp;file.txt</span>
+				</code>
+				<svg class="copyButton" fill="#FFFFFF" width="20" height="20" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+				    <path d="M0 1919.887h1467.88V452.008H0v1467.88ZM1354.965 564.922v1242.051H112.914V564.922h1242.051ZM1920 0v1467.992h-338.741v-113.027h225.827V112.914H565.035V338.74H452.008V0H1920ZM338.741 1016.93h790.397V904.016H338.74v112.914Zm0 451.062h790.397v-113.027H338.74v113.027Zm0-225.588h564.57v-112.913H338.74v112.913Z" fill-rule="evenodd"/>
+				</svg>
+			</div>
+			<h2 id="h1-2">Heading 1.2</h2>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce efficitur consequat nulla ac luctus. Nullam lacinia, libero eget consectetur mollis, erat nibh mattis turpis, quis condimentum turpis nulla sed velit. Praesent tincidunt sapien elementum ligula sodales viverra. Maecenas enim mi, iaculis vitae ultricies sit amet, semper sit amet erat. Vivamus et tellus a enim viverra iaculis. Etiam bibendum, sem vitae feugiat posuere, neque dolor convallis libero, quis imperdiet ipsum nulla quis lectus. Vestibulum et lacus non massa pharetra faucibus. Nunc laoreet condimentum vestibulum. Aliquam erat volutpat. Fusce magna mi, sagittis eu orci sed, sodales volutpat leo.
+				Suspendisse fermentum faucibus nulla, a rutrum metus consequat quis. In vulputate in lacus dapibus dignissim. Aenean volutpat eleifend tincidunt. Aenean dapibus quis lectus placerat tempus. Praesent erat magna, blandit faucibus ligula et, pretium convallis nisi. Aenean lacinia, magna sed vestibulum facilisis, massa ipsum tempor massa, elementum lobortis lacus quam nec velit.
+			</p>
+			<h2 id="h1-3">Heading 1.3</h2>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce efficitur consequat nulla ac luctus. Nullam lacinia, libero eget consectetur mollis, erat nibh mattis turpis, quis condimentum turpis nulla sed velit. Praesent tincidunt sapien elementum ligula sodales viverra. Maecenas enim mi, iaculis vitae ultricies sit amet, semper sit amet erat. Vivamus et tellus a enim viverra iaculis. Etiam bibendum, sem vitae feugiat posuere, neque dolor convallis libero, quis imperdiet ipsum nulla quis lectus. Vestibulum et lacus non massa pharetra faucibus. Nunc laoreet condimentum vestibulum. Aliquam erat volutpat. Fusce magna mi, sagittis eu orci sed, sodales volutpat leo.
+				Suspendisse fermentum faucibus nulla, a rutrum metus consequat quis. In vulputate in lacus dapibus dignissim. Aenean volutpat eleifend tincidunt. Aenean dapibus quis lectus placerat tempus. Praesent erat magna, blandit faucibus ligula et, pretium convallis nisi. Aenean lacinia, magna sed vestibulum facilisis, massa ipsum tempor massa, elementum lobortis lacus quam nec velit.
+			</p>
+			<h1 id="h2">Heading 2</h1>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce efficitur consequat nulla ac luctus. Nullam lacinia, libero eget consectetur mollis, erat nibh mattis turpis, quis condimentum turpis nulla sed velit. Praesent tincidunt sapien elementum ligula sodales viverra. Maecenas enim mi, iaculis vitae ultricies sit amet, semper sit amet erat. Vivamus et tellus a enim viverra iaculis. Etiam bibendum, sem vitae feugiat posuere, neque dolor convallis libero, quis imperdiet ipsum nulla quis lectus. Vestibulum et lacus non massa pharetra faucibus. Nunc laoreet condimentum vestibulum. Aliquam erat volutpat. Fusce magna mi, sagittis eu orci sed, sodales volutpat leo.
+				Suspendisse fermentum faucibus nulla, a rutrum metus consequat quis. In vulputate in lacus dapibus dignissim. Aenean volutpat eleifend tincidunt. Aenean dapibus quis lectus placerat tempus. Praesent erat magna, blandit faucibus ligula et, pretium convallis nisi. Aenean lacinia, magna sed vestibulum facilisis, massa ipsum tempor massa, elementum lobortis lacus quam nec velit.
+			</p>
+		</article>
+		<nav>
+			<a href="#h1">
+				<h3>Heading 1</h3>
+			</a>
+			<a href="#h1-1">
+				<h4>Heading 1.1</h4>
+			</a>
+			<a href="#h1-2">
+				<h4>Heading 1.2</h4>
+			</a>
+			<a href="#h1-3">
+				<h4>Heading 1.3</h4>
+			</a>
+			<a href="#h2">
+				<h3>Heading 2</h3>
+			</a>
+		</nav>
+		<a href="#">
+			<svg id="up" width="35" height="35" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#FFFFFF;stroke-linecap:round;stroke-linejoin:round;stroke-width:20px;">
+				<polyline class="cls-1" points="411.63 333.82 256 178.18 100.37 333.82"/>
+			</svg>
+		</a>
+	</main>
+	<footer>
+		<p>&copy; 2023 GNC</p>
+	</footer>
+	<script src="script.js"></script> 
+</body>
+</html>
