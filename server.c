@@ -37,21 +37,98 @@ void error_exit(char* msg)
     exit(1);
 }
 
-int create_http_response(char** response, char* message)
+// Returns composed response message
+int create_http_response(char** response, char* message, char* type)
 {
+    // Template with HTTP headers
     char* template = (char*)"HTTP/1.1 200 OK\r\n" \
-                            "Content-Type: text/plain\r\n" \
+                            "Content-Type: %s\r\n" \
                             "Content-Length: %d\r\n\r\n" \
                             "%s";
 
+    // Calculating lengths
     int message_len = strlen(message);
-    int template_len = strlen(template);
-    int response_len = message_len + template_len;
+    int response_len = message_len + strlen(template) + strlen(type);
 
-    *response = (char*)malloc(response_len);
-    sprintf(*response, template, message_len, message);
+    // Allocate memory for response message
+    *response = (char*)calloc(response_len, 1);
+
+    // Insert data according with template
+    sprintf(*response, template, type, message_len, message);
 
     return response_len;
+}
+
+// Reads file by path
+int parse_response_file(char* path, char** message)
+{
+    // Check if file exists
+    // (if not, return 404page)
+    char* selected = path;
+    if (access(path, F_OK) != 0)
+        selected = (char*)"page404.html";
+
+    // Open file
+    FILE* f = fopen(selected, "rb");
+
+    // Get length of file
+    fseek(f, 0, SEEK_END);
+    long fsize = ftell(f);
+    fseek(f, 0, SEEK_SET);
+
+    // Allocate memory for message
+    *message = calloc(fsize + 1, 1);
+
+    // Read all
+    fread(*message, fsize, 1, f);
+
+    // Close file and return
+    fclose(f);
+
+    return fsize;
+}
+
+// Extracts file path from request message
+int parse_path(char* request, int request_size, char** path)
+{
+    // Create buffer filled with zeros
+    char buffer[BUFFER_SIZE];
+    bzero(buffer, BUFFER_SIZE);
+
+    int started = 0; // 1 if pointer is within the path
+    int pathlen = 0; // Length of path in symbols
+
+    // Iterate over symbols in request message
+    for ( int i = 0; i < request_size; i++ )
+    {
+        // first "/" indicates the beginning of the path
+        if ( request[i] == '/' )
+        {
+            started = 1;
+            continue;
+        }
+
+        // First space after '/' indicates the end of the path
+        if ( request[i] == ' ' )
+            if ( started )
+                break;
+
+        // Skip everything before path
+        if ( !started )
+            continue;
+
+        // Copy path into buffer
+        buffer[pathlen++] = request[i];
+    }
+
+    // Allocate memory for path + 1 for null-terminator
+    *path = (char*)calloc(pathlen + 1, 1);
+
+    // Copy from buffer
+    for ( int i = 0; i < pathlen; i++ )
+        (*path)[i] = buffer[i];
+
+    return pathlen;
 }
 
 int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
@@ -76,16 +153,38 @@ int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
 
         char *ip = inet_ntoa(cli_addr->sin_addr);
 
-        /* printf(" [SERVER] recieved the message from %s\n%s\n", ip, buffer); */
-        printf(" [SERVER] recieved the message from %s\n", ip);
+        printf(" [SERVER] recieved the message from %s\n%s\n", ip, buffer);
+        /* printf(" [SERVER] recieved the message from %s\n", ip); */
 
-        char* message = (char*)"Server's test response message";
-        char* response; int response_len = create_http_response(&response, message);
+        // Parse endpoint path
+        char* path; int pathlen = parse_path(buffer, BUFFER_SIZE, &path);
 
+        // Define variables for messages
+        char* message; int message_len;
+        char* type;
+        char* response; int response_len;
+
+        // If / path
+        if ( strlen(path) == 0 )
+        {
+            message = (char*)"Server's test response message";
+            type = (char*)"text/plain";
+        } else {
+            message; message_len = parse_response_file(path, &message);
+            type = (char*)"text/html";
+        }
+
+        // Create response
+        response_len = create_http_response(&response, message, type);
+
+        // Send data
         n = write(newsockfd, response, response_len);
+
         if (n < 0)
             error_exit(" [ERROR] writing to socket");
     }
+
+    return 0;
 }
 
 int main(int argc, char* argv[])
