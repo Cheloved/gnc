@@ -225,6 +225,27 @@ footer {
 	font-size: 14px;
 }
 
+#not-found-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+	width: 100%;
+	height: 100vh;
+}
+
+#four-o-four {
+	color: #007DFC;
+	font-weight: 900;
+	font-size: 56px;
+}
+
+#not-found-container a {
+	margin-top: 2%;
+	text-decoration: underline;
+}
+
 @media (min-width: 768px) {
 
 	nav {
