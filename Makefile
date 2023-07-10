@@ -1,3 +1,6 @@
+# Folder with sources
+SRC_FOLDER = backend
+
 #OBJS specifies which files to compile as part of the project
 OBJS = *.c
 
@@ -17,8 +20,8 @@ OBJ_NAME = server
 
 #This is the target that compiles our executable
 all: 
-	$(CC) $(COMPILER_FLAGS) $(LINKER_FLAGS) $(OBJS) -o $(OBJ_NAME)
+	$(CC) $(COMPILER_FLAGS) $(LINKER_FLAGS) $(SRC_FOLDER)/$(OBJS) -o $(OBJ_NAME)
 	sudo ./$(OBJ_NAME) 80
 debug:
-	$(CC) $(COMPILER_FLAGS) $(DEBUG_FLAGS) $(LINKER_FLAGS) $(OBJS) -o $(OBJ_NAME)
+	$(CC) $(COMPILER_FLAGS) $(DEBUG_FLAGS) $(LINKER_FLAGS) $(SRC_FOLDER)/$(OBJS) -o $(OBJ_NAME)
 	sudo gdb $(OBJ_NAME)
