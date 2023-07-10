@@ -66,7 +66,7 @@ int parse_response_file(char* path, char** message)
     // (if not, return 404page)
     char* selected = path;
     if (access(path, F_OK) != 0)
-        selected = (char*)"page404.html";
+        selected = (char*)"frontend/page404.html";
 
     // Open file
     FILE* f = fopen(selected, "rb");
