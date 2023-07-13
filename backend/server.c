@@ -85,15 +85,12 @@ int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
         char* type;
         char* response; int response_len;
 
-        // If / path
-        if ( strlen(path) == 0 )
-        {
-            message = (char*)"Server's test response message";
-            type = (char*)"text/plain";
-        } else {
-            message; message_len = read_file(path, &message);
-            type = (char*)"text/html";
-        }
+        // If path is /
+        if ( strlen(path) == 11 )
+            path = (char*)"./frontend/index.html";
+
+        message; message_len = read_file(path, &message);
+        type = (char*)"text/html";
 
         // Create response
         response_len = create_http_response(&response, message, type);
