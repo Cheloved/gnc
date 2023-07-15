@@ -6,6 +6,9 @@
 #include <string.h>
 #include <unistd.h>
 
+// Checks if string ends with suffix
+int ends_with(const char *str, const char *suffix);
+
 // Reads file by path
 int read_file(char* path, char** data);
 
