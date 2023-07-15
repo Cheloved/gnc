@@ -81,22 +81,26 @@ int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
         char* path; int pathlen = parse_path(buffer, BUFFER_SIZE, &path, BUFFER_SIZE);
 
         // Define variables for messages
-        char* message; int message_len;
+        char* message;
+        int return_code = 404;
         char* type;
-        char* response; int response_len;
+        char* response; int response_len = 0;
 
-        // If / path
-        if ( strlen(path) == 0 )
-        {
-            message = (char*)"Server's test response message";
-            type = (char*)"text/plain";
-        } else {
-            message; message_len = read_file(path, &message);
-            type = (char*)"text/html";
-        }
+        // If path is /
+        // (./frontend/) <- 11 symbols
+        if ( pathlen == 11 )
+            path = (char*)"./frontend/index.html";
+
+        // Read data from file
+        return_code = read_file(path, &message);
+        type = (char*)"text/html";
+
+        // Change type if browser is requesting styles
+        if ( ends_with(path, ".css") )
+            type = (char*)"text/css";
 
         // Create response
-        response_len = create_http_response(&response, message, type);
+        response_len = create_http_response(&response, return_code, type, message);
 
         // Send data
         n = write(newsockfd, response, response_len);
@@ -104,7 +108,6 @@ int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
         if (n < 0)
             error_exit(" [ERROR] writing to socket");
     }
-
     return 0;
 }
 
@@ -198,7 +201,7 @@ int main(int argc, char* argv[])
     // backlog queue, i.e. the number of connections that can
     // wait while the process is handling a particular
     // connection
-    listen(sockfd, 5);
+    listen(sockfd, 64);
 
     // Loop responce cycle forever
     loop(&sockfd, &cli_addr, &quit);

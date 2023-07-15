@@ -5,6 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int create_http_response(char** response, char* message, char* type);
+int create_http_response(char** response, int return_code, char* type, char* message);
 
 #endif
