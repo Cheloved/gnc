@@ -3,8 +3,6 @@
 *::after {
 	margin: 0;
 	padding: 0;
-	overflow: scroll;
-	overflow-x: hidden;
 }
 
 a {
@@ -203,11 +201,24 @@ code .others {
 
 .copyButton {
 	cursor: pointer;
-	padding: 3% 4%;
-	transition: fill 0.5s ease;
+	margin: 2% 4%;
+	padding: 1%;
+	opacity: 0;
+	transition: fill 1s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.code-container:hover .copyButton {
+	opacity: 1;
+	transition: opacity 0.3s ease-in-out;
+}
+
+.copyButton:hover {
+	fill: #6272A4;
 }
 
 .copyButton.clicked {
+	outline: 1px solid #6272A4;
+	border-radius: 5px;
 	fill: #6272A4;
 }
 
@@ -238,12 +249,16 @@ footer {
 #four-o-four {
 	color: #007DFC;
 	font-weight: 900;
-	font-size: 56px;
+	font-size: 72px;
 }
 
 #not-found-container a {
 	margin-top: 2%;
 	text-decoration: underline;
+}
+
+#not-found-container h2 {
+	font-size: 16px;
 }
 
 @media (min-width: 768px) {
