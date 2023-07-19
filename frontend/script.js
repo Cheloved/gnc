@@ -76,11 +76,12 @@ copyButton.addEventListener("click", () => {
 	dummyElement.select();
 	document.execCommand('copy');
 	document.body.removeChild(dummyElement);
-	  
+
 	copyButton.classList.add('clicked');
-	setTimeout(() => {
+	  
+	copyButton.addEventListener('transitionend', () => {
 		copyButton.classList.remove('clicked');
-	}, 3000);
+	}, { once: true });
 });
 
 /* Smooth scrolling */
