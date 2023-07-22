@@ -1,21 +1,24 @@
 /* Toggle color scheme */
+let isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
 function toggleMode() {
-	let sun = document.querySelector('#sun');
+	isDarkMode = !isDarkMode;
+
 	let moon = document.querySelector('#moon');
+	let sun = document.querySelector('#sun');
 	let body = document.querySelector('body');
 	let codeContainer = document.querySelector('.code-container');
 	let text = document.querySelectorAll('h1, h2, p');
-	let nav = document.querySelectorAll('h3, h4, a');
+	let nav = document.querySelectorAll('h3, h4, nav a');
 	let logoCircle = document.querySelectorAll('#el-1');
 	let logoAll = document.querySelectorAll('#rect, #el-2');
 	let logoSpan = document.querySelector('#logo-span');
 	let up = document.querySelector('#up');
-	let extLinkIcon = document.querySelector('#ext-link-path');
 	let lang = document.querySelector('select');
 	let arrow = document.querySelector('#arrow-stroke');
 	let menu = document.querySelector('#hamburger-icon-svg');
-	
-	if ((moon.style.display === '') || (moon.style.display === 'flex')) {
+
+	if (isDarkMode) {
 		moon.style.display = 'none';
 		sun.style.display = 'flex';
 		body.style.backgroundColor = '#282A36';
@@ -27,7 +30,6 @@ function toggleMode() {
 		logoSpan.style.color = '#6272A4';
 		up.style.stroke = '#282A36';
 		up.style.backgroundColor = '#6272A4';
-		extLinkIcon.setAttribute('stroke', '#6272A4');
 		lang.style.color = '#FFFFFF';
 		arrow.style.fill = '#FFFFFF';
 		menu.style.fill = '#6272A4';
@@ -43,7 +45,6 @@ function toggleMode() {
 		logoSpan.style.color = '#007DFC';
 		up.style.stroke = '#FFFFFF';
 		up.style.backgroundColor = '#007DFC';
-		extLinkIcon.setAttribute('stroke', '#007DFC');
 		lang.style.color = '#000000';
 		arrow.style.fill = '#000000';
 		menu.style.fill = '#007DFC';
