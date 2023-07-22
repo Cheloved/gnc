@@ -195,15 +195,6 @@
 	padding: 0;
 }
 
-a {
-	text-decoration: none;
-	color: #007DFC;
-}
-
-a:visited {
-	color: #007DFC;
-}
-
 body {
 	font-family: 'Roboto', sans-serif;
 	display: flex;
@@ -262,10 +253,8 @@ footer {
 .ext-link a{
 	display: flex;
 	align-items: center;
-}
-
-.ext-link a:hover, .ext-link a:active {
 	text-decoration: underline;
+	color: #808080;
 }
 
 .ext-link svg {
@@ -341,10 +330,7 @@ nav {
 
 nav a {
 	color: #007DFC;
-}
-
-nav a:hover, nav a:active {
-	text-decoration: underline;
+	text-decoration: underline dotted;
 }
 
 nav h3 {
@@ -413,6 +399,7 @@ code .others {
 }
 
 #up {
+	stroke: #FFFFFF;
 	position: fixed;
 	bottom: 0;
 	z-index: 3;
@@ -444,11 +431,10 @@ footer {
 
 #not-found-container a {
 	margin-top: 2%;
-	text-decoration: underline;
 }
 
-#not-found-container h2 {
-	font-size: 16px;
+#not-found-container a:visited {
+	color: #007DFC;
 }
 
 @media (min-width: 768px) {
@@ -457,12 +443,11 @@ footer {
 		width: 30%;
 		position: fixed;
 		right: 0;
-		top: 0;
+		top: 20%;
 		bottom: 0;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: center;
 		z-index: 1;
 	}
 
@@ -506,10 +491,10 @@ footer {
 	}
 
 	article {
-		width: 60%;
+		width: 70%;
 		margin-top: 10%;
-		margin-left: 15%;
-		margin-right: 25%;
+		margin-left: 10%;
+		margin-right: 20%;
 	}
 
 	article h1 {
@@ -540,7 +525,7 @@ footer {
 
 	#up {
 		right: 0;
-		margin-right: 7%;
+		margin-right: 5%;
 		margin-bottom: 10%;
 	}
 
@@ -548,6 +533,76 @@ footer {
 		padding-top: 10%;
 		padding-bottom: 4%;
 		font-size: 13px;
+	}
+
+}
+
+@media (prefers-color-scheme: dark) {
+
+	#moon {
+		display: none;
+	}
+
+	#sun {
+		display: flex;
+	}
+
+	body {
+		background-color: #282A36;
+	}
+
+	.code-container {
+		background-color: #44475A;
+	}
+
+	h1, h2, p {
+		color: #FFFFFF;
+	}
+
+	h3, h4{
+		color: #6272A4;
+	}
+
+	nav a {
+		color: #6272A4;
+		text-decoration: underline dotted;
+	}
+
+	#el-1 {
+		fill: #282A36;
+	}
+
+	#rect, #el-2 {
+		fill: #6272A4;
+	}
+
+	#logo-span {
+		color: #6272A4;
+	}
+
+	#up {
+		stroke: #282A36;
+		background-color: #6272A4;
+	}
+
+	select {
+		color: #FFFFFF;
+	}
+
+	#arrow-stroke {
+		fill: #FFFFFF;
+	}
+
+	#hamburger-icon-svg {
+		fill: #6272A4;
+	}
+
+	#four-o-four {
+		color: #6272A4;
+	}
+
+	#not-found-container a, #not-found-container a:visited {
+		color: #6272A4;
 	}
 
 }

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="40" viewBox="0 0 60 40">
+	<rect id="rect" width="60" height="40" fill="#007DFC" />
+	<ellipse id="el-1" stroke-width="0" ry="15" cx="30" cy="20" stroke="#000" fill="#fff" />
+	<ellipse id="el-2" stroke-width="0" ry="10" cx="30" cy="20" stroke="#000" fill="#007DFC" />
+	<style>
+		@media (prefers-color-scheme: dark) {
+			#rect, #el-2 {
+				fill: #6272A4;
+			}
+
+			#el-1 {
+				fill: #282A36
+			}
+		}
+	</style>
+</svg>
