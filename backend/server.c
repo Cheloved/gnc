@@ -89,7 +89,13 @@ int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
         // If path is /
         // (./frontend/) <- 11 symbols
         if ( pathlen == 11 )
-            path = (char*)"./frontend/index.html";
+        {
+            free(path); // Free path allocated by parse_path()
+
+            // Allocate new memory and paste index.html path
+            path = (char*)calloc(22, 1);
+            strcpy(path, "./frontend/index.html");
+        }
 
         // Read data from file
         return_code = read_file(path, &message);
@@ -104,6 +110,11 @@ int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
 
         // Send data
         n = write(newsockfd, response, response_len);
+
+        // Free memory
+        free(message);
+        free(response);
+        free(path);
 
         if (n < 0)
             error_exit(" [ERROR] writing to socket");
