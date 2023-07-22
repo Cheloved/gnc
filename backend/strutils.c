@@ -64,7 +64,7 @@ int parse_path(char* request, int request_size, char** path, const int buffer_si
     for ( int i = 0; i < request_size; i++ )
     {
         // first "/" indicates the beginning of the path
-        if ( request[i] == '/' )
+        if ( request[i] == '/' && !started )
         {
             started = 1;
             continue;
