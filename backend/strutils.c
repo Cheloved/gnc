@@ -32,6 +32,14 @@ int read_file(char* path, char** data)
     // Open file
     FILE* f = fopen(selected, "rb");
 
+    // If cannot open, retry every second
+    while ( f == NULL )
+    {
+        printf("\n\n [ERROR] File opening error: <%s> %s\n\n", selected, strerror(errno));
+        sleep(1);
+        f = fopen(selected, "rb");
+    }
+
     // Get length of file
     fseek(f, 0, SEEK_END);
     long fsize = ftell(f);
