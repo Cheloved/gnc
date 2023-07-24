@@ -34,6 +34,73 @@
 #include "include/webutils.h"
 #include "include/logging.h"
 
+int handle_connection(int newsockfd, struct sockaddr_in* cli_addr)
+{
+    // n is the return value for the read() and write()
+    // calls; It contains the number of characters read or
+    // written
+    int n;
+
+    // The server reads characters from the socket
+    // connection into this buffer
+    char buffer[BUFFER_SIZE];
+
+    // Clear buffer and read from new socket
+    bzero(buffer, BUFFER_SIZE);
+    n = read(newsockfd, buffer, BUFFER_SIZE - 1);
+    if ( n < 0 )
+        error_exit(" [ERROR] reading from socket");
+
+    char *ip = inet_ntoa(cli_addr->sin_addr);
+
+    printf(" [SERVER] recieved the message from %s\n%s\n", ip, buffer);
+    /* printf(" [SERVER] recieved the message from %s\n", ip); */
+
+    // Parse endpoint path
+    char* path; int pathlen = parse_path(buffer, BUFFER_SIZE, &path, BUFFER_SIZE);
+
+    // Define variables for messages
+    char* message;
+    int return_code = 404;
+    char* type;
+    char* response; int response_len = 0;
+
+    // If path is /
+    // (./frontend/) <- 11 symbols
+    if ( pathlen == 11 )
+    {
+        free(path); // Free path allocated by parse_path()
+
+        // Allocate new memory and paste index.html path
+        path = (char*)calloc(22, 1);
+        strcpy(path, "./frontend/index.html");
+    }
+
+    // Read data from file
+    return_code = read_file(path, &message);
+    type = (char*)"text/html";
+
+    // Change type if browser is requesting styles
+    if ( ends_with(path, ".css") )
+        type = (char*)"text/css";
+
+    // Create response
+    response_len = create_http_response(&response, return_code, type, message);
+
+    // Send data
+    n = write(newsockfd, response, response_len);
+
+    // Free memory
+    free(message);
+    free(response);
+    free(path);
+
+    if (n < 0)
+        error_exit(" [ERROR] writing to socket");
+
+    return 0;
+}
+
 /*
  * Function contains a loop for handling incoming connections
  */
@@ -47,15 +114,6 @@ int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
     // Stores the size of the address of the client.
     // Is needed for the accept system call
     unsigned int client_len;
-
-    // n is the return value for the read() and write()
-    // calls; It contains the number of characters read or
-    // written
-    int n;
-
-    // The server reads characters from the socket
-    // connection into this buffer
-    char buffer[BUFFER_SIZE];
     while ( !*quit )
     {
         // The accept() system call causes the process to block until a
@@ -64,60 +122,29 @@ int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
         client_len = sizeof(&cli_addr);
         newsockfd = accept(*sockfd, (struct sockaddr*)cli_addr, &client_len);
         if ( newsockfd < 0 )
-            error_exit( "[ERROR] on accept" );
+            error_exit( " [ERROR] on accept\n\n" );
 
-        // Clear buffer and read from new socket
-        bzero(buffer, BUFFER_SIZE);
-        n = read(newsockfd, buffer, BUFFER_SIZE - 1);
-        if ( n < 0 )
-            error_exit(" [ERROR] reading from socket");
+        // Fork the process to be able to handle multiple
+        // connections at once
+        pid_t pid = fork();
 
-        char *ip = inet_ntoa(cli_addr->sin_addr);
+        // Handle forking error
+        if ( pid < 0 )
+            error_exit( " [ERROR] on fork\n\n" );
 
-        printf(" [SERVER] recieved the message from %s\n%s\n", ip, buffer);
-        /* printf(" [SERVER] recieved the message from %s\n", ip); */
-
-        // Parse endpoint path
-        char* path; int pathlen = parse_path(buffer, BUFFER_SIZE, &path, BUFFER_SIZE);
-
-        // Define variables for messages
-        char* message;
-        int return_code = 404;
-        char* type;
-        char* response; int response_len = 0;
-
-        // If path is /
-        // (./frontend/) <- 11 symbols
-        if ( pathlen == 11 )
+        // Child process will close sockfd and call handle_connection(),
+        // passing the new socket file descriptor as an argument. Exit when done.
+        //
+        // Parent process will just close new socket fd, preverting 
+        // file descriptor leak.
+        if ( pid == 0 )
         {
-            free(path); // Free path allocated by parse_path()
-
-            // Allocate new memory and paste index.html path
-            path = (char*)calloc(22, 1);
-            strcpy(path, "./frontend/index.html");
+            close(*sockfd);
+            handle_connection(newsockfd, cli_addr);
+            exit(0);
+        } else {
+            close(newsockfd);
         }
-
-        // Read data from file
-        return_code = read_file(path, &message);
-        type = (char*)"text/html";
-
-        // Change type if browser is requesting styles
-        if ( ends_with(path, ".css") )
-            type = (char*)"text/css";
-
-        // Create response
-        response_len = create_http_response(&response, return_code, type, message);
-
-        // Send data
-        n = write(newsockfd, response, response_len);
-
-        // Free memory
-        free(message);
-        free(response);
-        free(path);
-
-        if (n < 0)
-            error_exit(" [ERROR] writing to socket");
     }
     return 0;
 }
