@@ -59,11 +59,11 @@ int read_file(char* path, char** data)
 }
 
 // Extracts file path from request message
-int parse_path(char* request, int request_size, char** path, const int buffer_size)
+int parse_path(char* request, int request_size, char** path)
 {
     // Create buffer filled with zeros
-    char buffer[buffer_size];
-    bzero(buffer, buffer_size);
+    char buffer[BUFFER_SIZE];
+    bzero(buffer, BUFFER_SIZE);
 
     int started = 0; // 1 if pointer is within the path
     int pathlen = 0; // Length of path in symbols
@@ -107,11 +107,11 @@ int parse_path(char* request, int request_size, char** path, const int buffer_si
     return strlen(*path);
 }
 
-int parse_data(char* request, int request_size, char** data, const int buffer_size)
+int parse_data(char* request, int request_size, char** data)
 {
     // Create buffer filled with zeros
-    char buffer[buffer_size];
-    bzero(buffer, buffer_size);
+    char buffer[BUFFER_SIZE];
+    bzero(buffer, BUFFER_SIZE);
 
     // Search for new line since the data is located
     // on the last line of request

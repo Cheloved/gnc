@@ -1,5 +1,3 @@
-#define BUFFER_SIZE 8192
-
 // Input/output
 #include <stdio.h>
 
@@ -33,6 +31,8 @@
 #include "include/strutils.h"
 #include "include/webutils.h"
 #include "include/logging.h"
+#include "include/defines.h"
+
 
 int handle_connection(int newsockfd, struct sockaddr_in* cli_addr)
 {
@@ -57,7 +57,7 @@ int handle_connection(int newsockfd, struct sockaddr_in* cli_addr)
     /* printf(" [SERVER] recieved the message from %s\n", ip); */
 
     // Parse endpoint path
-    char* path; int pathlen = parse_path(buffer, BUFFER_SIZE, &path, BUFFER_SIZE);
+    char* path; int pathlen = parse_path(buffer, BUFFER_SIZE, &path);
 
     // Define variables for messages
     char* message;
@@ -79,7 +79,7 @@ int handle_connection(int newsockfd, struct sockaddr_in* cli_addr)
     if ( !strcmp(path, "./frontend/add") )
     {
         char* data;
-        int datalen = parse_data(buffer, strlen(buffer), &data, BUFFER_SIZE );
+        int datalen = parse_data(buffer, strlen(buffer), &data);
         printf(" [DEBUG] Got payload: %s\n\n", data);
     }
 
