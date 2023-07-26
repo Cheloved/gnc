@@ -28,6 +28,9 @@
 // For read(int file_descriptor, void* buf, size_t count) function
 #include <unistd.h>
 
+// For waiting for child process
+#include <sys/wait.h>
+
 #include "include/strutils.h"
 #include "include/webutils.h"
 #include "include/logging.h"
@@ -146,6 +149,7 @@ int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
         // Fork the process to be able to handle multiple
         // connections at once
         pid_t pid = fork();
+        int status = 0;
 
         // Handle forking error
         if ( pid < 0 )
@@ -162,6 +166,9 @@ int loop(int* sockfd, struct sockaddr_in* cli_addr, int* quit)
             handle_connection(newsockfd, cli_addr);
             exit(0);
         } else {
+            // Wait for the child to exit
+            // to free the PID
+            waitpid( pid, &status, 0 );
             close(newsockfd);
         }
     }
