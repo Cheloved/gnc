@@ -76,6 +76,14 @@ int handle_connection(int newsockfd, struct sockaddr_in* cli_addr)
         strcpy(path, "./frontend/index.html");
     }
 
+    if ( !strcmp(path, "./frontend/add") )
+    {
+        char* data;
+        int datalen = parse_data(buffer, strlen(buffer), &data, BUFFER_SIZE );
+        printf(" [DEBUG] Got payload: %s\n\n", data);
+    }
+
+
     // Read data from file
     return_code = read_file(path, &message);
     type = (char*)"text/html";

@@ -106,3 +106,29 @@ int parse_path(char* request, int request_size, char** path, const int buffer_si
 
     return strlen(*path);
 }
+
+int parse_data(char* request, int request_size, char** data, const int buffer_size)
+{
+    // Create buffer filled with zeros
+    char buffer[buffer_size];
+    bzero(buffer, buffer_size);
+
+    // Search for new line since the data is located
+    // on the last line of request
+    int begin = 0;
+    for ( begin = request_size - 1; begin >= 0; begin-- )
+        if ( request[begin] == '\n' )
+            break;
+
+    // Copy to buffer;
+    int datalen = 0;
+    for ( int i = begin; i < request_size; i++ )
+        buffer[datalen++] = request[i];
+
+    printf(" [DEBUG] Got payload in parse_data(): %s\n\n", buffer);
+
+    *data = calloc(datalen + 1, 1);
+    strcpy(*data, buffer); 
+
+    return datalen;
+}
