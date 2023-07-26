@@ -66,26 +66,37 @@ int handle_connection(int newsockfd, struct sockaddr_in* cli_addr)
     char* response; int response_len = 0;
 
     // If path is /
-    // (./frontend/) <- 11 symbols
-    if ( pathlen == 11 )
+    // replace with /index.html
+    if ( pathlen == 1 )
     {
         free(path); // Free path allocated by parse_path()
 
         // Allocate new memory and paste index.html path
-        path = (char*)calloc(22, 1);
-        strcpy(path, "./frontend/index.html");
+        path = (char*)calloc(12, 1);
+        strcpy(path, "/index.html");
     }
 
-    if ( !strcmp(path, "./frontend/add") )
+    if ( !strcmp(path, "/add") )
     {
         char* data;
         int datalen = parse_data(buffer, strlen(buffer), &data);
-        printf(" [DEBUG] Got payload: %s\n\n", data);
+
+        // TODO:
+        // fill s_host struct with parsed data
+        // and append it to a /get file and hosts array
+
+        // If data is sufficient
+        path = (char*)calloc(17, 1);
+        strcpy(path, "/add_success.txt");
+
+        // If not
+        path = (char*)calloc(15, 1);
+        strcpy(path, "/add_error.txt");
     }
 
 
     // Read data from file
-    return_code = read_file(path, &message);
+    return_code = read_file(path, pathlen, &message);
     type = (char*)"text/html";
 
     // Change type if browser is requesting styles

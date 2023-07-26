@@ -16,9 +16,21 @@ int ends_with(const char *str, const char *suffix)
 }
 
 // Reads file by path
-int read_file(char* path, char** data)
+int read_file(char* file_path, int pathlen, char** data)
 {
     int return_code = 200;
+
+    // Prepend folder name
+    char prepend[11] = "./frontend";
+
+    // Create full path
+    int full_path_len = pathlen + 11 + 1;
+    char path[full_path_len];
+    bzero(path, full_path_len);
+
+    // Copy folder and path
+    strcpy(path, prepend);
+    strcpy(&(path[10]), file_path);
 
     // Check if file exists
     // (if not, return 404page)
@@ -73,10 +85,7 @@ int parse_path(char* request, int request_size, char** path)
     {
         // first "/" indicates the beginning of the path
         if ( request[i] == '/' && !started )
-        {
             started = 1;
-            continue;
-        }
 
         // First space after '/' indicates the end of the path
         if ( request[i] == ' ' )
@@ -92,18 +101,10 @@ int parse_path(char* request, int request_size, char** path)
     }
 
     // Allocate memory for path
-    // + 11 for './frontend/'
     // + 1 for null-terminator
-    *path = (char*)calloc(pathlen + 12, 1);
+    *path = (char*)calloc(pathlen + 1, 1);
 
-    char prefix[11] = "./frontend/";
-    for ( int i = 0; i < 11; i++ )
-        (*path)[i] = prefix[i];
-
-    // Copy from buffer
-    for ( int i = 11; i < pathlen+11; i++ )
-        (*path)[i] = buffer[i-11];
-
+    strcpy(*path, buffer);
     return strlen(*path);
 }
 
@@ -124,8 +125,6 @@ int parse_data(char* request, int request_size, char** data)
     int datalen = 0;
     for ( int i = begin; i < request_size; i++ )
         buffer[datalen++] = request[i];
-
-    printf(" [DEBUG] Got payload in parse_data(): %s\n\n", buffer);
 
     *data = calloc(datalen + 1, 1);
     strcpy(*data, buffer); 

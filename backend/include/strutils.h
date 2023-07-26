@@ -13,7 +13,7 @@
 int ends_with(const char *str, const char *suffix);
 
 // Reads file by path
-int read_file(char* path, char** data);
+int read_file(char* path, int pathlen, char** data);
 
 // Extracts file path from request message
 int parse_path(char* request, int request_size, char** path);

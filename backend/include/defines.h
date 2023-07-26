@@ -17,6 +17,6 @@ struct s_host
     // Additional info (optional)
     char* extra_info;
     int extra_len;
-}
+};
 
 #endif
