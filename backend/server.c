@@ -89,12 +89,14 @@ int handle_connection(int newsockfd, struct sockaddr_in* cli_addr)
         // and append it to a /get file and hosts array
 
         // If data is sufficient
-        path = (char*)calloc(17, 1);
-        strcpy(path, "/add_success.txt");
+        /* path = (char*)calloc(17, 1); */
+        /* strcpy(path, "/add_success.txt"); */
 
         // If not
-        path = (char*)calloc(15, 1);
-        strcpy(path, "/add_error.txt");
+        /* path = (char*)calloc(15, 1); */
+        /* strcpy(path, "/add_error.txt"); */
+
+        free(data);
     }
 
 
